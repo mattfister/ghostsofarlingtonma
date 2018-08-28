@@ -1,24 +1,20 @@
-body, #content, #container {
-    width: 100%;
-    margin: 0;
-    float: none;
-    background: rgb(134, 134, 134);
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1024px;
-}
+@import url(https://fonts.googleapis.com/css?family=Slabo+27px);
 
 body {
     font: 1em Georgia, "Times New Roman", Times, serif;
     color: #000;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin:auto;
     max-width: 640px;
+    font-family: 'Lora', serif;
+    margin-top: 20px;
+    background-color: #aaaaaa;
+    margin-bottom: 40px;
 }
 h1,h2,h3,h4,h5,h6 {
     font-family: Helvetica, Arial, sans-serif;
     text-align: left;
     color: #000;
+    font-family: 'Lora', serif;
 }
 h1 { font-size: 250%; }
 h2 { font-size: 175%; }

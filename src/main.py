@@ -19,6 +19,9 @@ def read_properties_file(path):
     return props
 
 
+def get_font():
+    return "<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>\n"
+
 def get_css():
     return '<link rel="stylesheet" href="../css/base.css">\n'
 
@@ -71,6 +74,7 @@ def write_output(f_name, props):
     f_name = f_name.replace('properties', 'html')
     with open("../l/" + f_name, 'w') as f:
         f.write(get_css())
+        f.write(get_font())
 
         f.write(open_body())
 
