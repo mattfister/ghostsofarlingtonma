@@ -115,7 +115,7 @@ def write_index(all_props):
         f.write(open_ul())
         for props in all_props:
             f.write(open_li())
-            f.write(open_a('/l/'+props.get('fname')))
+            f.write(open_a('./l/'+props.get('fname')))
             f.write(props.get('title')[0])
             f.write(close_a())
             f.write(close_li())
