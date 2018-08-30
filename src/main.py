@@ -71,6 +71,12 @@ def open_li():
 def close_li():
     return '</li>'
 
+def open_footer():
+    return '<footer>'
+
+def close_footer():
+    return '</footer>'
+
 def get_head():
     return "<head>\n\
     <!-- Global site tag (gtag.js) - Google Analytics -->\n\
@@ -81,6 +87,7 @@ def get_head():
     gtag('js', new Date());\n\
     gtag('config', 'UA-124818630-1');\n\
     </script>\n\
+    <title>" + SITE_TITLE + "</title>\n\
     </head>\n"
 
 def write_index(all_props):
@@ -112,17 +119,36 @@ def write_index(all_props):
         f.write(open_h(2))
         f.write("All Ghost Sightings")
         f.write(close_h(2))
-        f.write(open_ul())
+
+
+        cities_to_props_list = {}
         for props in all_props:
+            city = props.get('city')[0]
+            if not cities_to_props_list.get(city):
+                cities_to_props_list[city] = []
+                cities_to_props_list[city].append(props)
+            else:
+                cities_to_props_list[city].append(props)
+
+        f.write(open_ul())
+        for city, props_list in cities_to_props_list.items():
             f.write(open_li())
-            f.write(open_a('./l/'+props.get('fname')))
-            f.write(props.get('title')[0])
-            f.write(close_a())
+            f.write(city+'\n')
             f.write(close_li())
+
+            f.write(open_ul())
+
+            for props in props_list:
+                f.write(open_li())
+                f.write(open_a('./l/'+props.get('fname')))
+                f.write(props.get('title')[0])
+                f.write(close_a())
+                f.write(close_li())
+            f.write(close_ul())
         f.write(close_ul())
 
 
-def write_output(f_name, props):
+def write_page(f_name, props):
     f_name = f_name.replace('properties', 'html')
     with open("../l/" + f_name, 'w') as f:
         f.write(get_css(True))
@@ -166,6 +192,7 @@ def write_output(f_name, props):
         f.write(open_ul())
 
         source_props = props.get("source")
+
         for source in source_props:
             f.write(open_li())
             f.write(open_a(source.split('>')[1]))
@@ -175,6 +202,12 @@ def write_output(f_name, props):
 
         f.write(close_ul())
 
+        f.write(open_footer())
+        f.write(open_a(".."))
+        f.write("Back to " + SITE_TITLE)
+        f.write(close_a())
+        f.write(close_footer())
+
         f.write(close_body())
 
 if __name__ == '__main__':
@@ -183,6 +216,6 @@ if __name__ == '__main__':
         props = read_properties_file("../input/" + name)
         props['fname'] = name.replace('.properties', '.html')
         all_props.append(props);
-        write_output(name, props)
+        write_page(name, props)
 
     write_index(all_props)
