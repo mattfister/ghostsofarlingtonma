@@ -1,5 +1,5 @@
-Ghosts of Arlington, MA
------------------------
+Ghosts of MA
+------------
 
 This is a static website along with the Python code to generate it.
 

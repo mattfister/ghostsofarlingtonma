@@ -1,6 +1,6 @@
 import os
 
-SITE_TITLE = 'Ghosts of Arlington, MA'
+SITE_TITLE = 'Ghosts of Massachusetts'
 UP_INDEX = '../index.html'
 
 
@@ -22,8 +22,11 @@ def read_properties_file(path):
 def get_font():
     return "<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>\n"
 
-def get_css():
-    return '<link rel="stylesheet" href="../css/base.css">\n'
+def get_css(up):
+    if up:
+        return '<link rel="stylesheet" href="../css/base.css">\n'
+    else:
+        return '<link rel="stylesheet" href="./css/base.css">\n'
 
 def open_body():
     return '<body>\n'
@@ -80,11 +83,49 @@ def get_head():
     </script>\n\
     </head>\n"
 
+def write_index(all_props):
+    with open("../index.html", 'w') as f:
+        f.write(get_css(False))
+        f.write(get_font())
+
+        f.write(get_head())
+
+        f.write(open_body())
+
+        # Site title
+        f.write(open_h(1))
+        f.write(open_a('./'))
+        f.write(SITE_TITLE)
+        f.write(close_a())
+        f.write(close_h(1))
+
+        f.write(p("The below map tracks ghosts and haunted places in Massachusetts. Click on a location for more information. To report a ghost sighting in MA, <a href='https://www.twitter.com/matt_fister'>please contact me.</a>\n"))
+
+        f.write(open_h(2))
+        f.write("Map of Ghost Sightings")
+        f.write(close_h(2))
+
+        f.write('<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>\n')
+
+        f.write(close_body())
+
+        f.write(open_h(2))
+        f.write("All Ghost Sightings")
+        f.write(close_h(2))
+        f.write(open_ul())
+        for props in all_props:
+            f.write(open_li())
+            f.write(open_a('/l/'+props.get('fname')))
+            f.write(props.get('title')[0])
+            f.write(close_a())
+            f.write(close_li())
+        f.write(close_ul())
+
 
 def write_output(f_name, props):
     f_name = f_name.replace('properties', 'html')
     with open("../l/" + f_name, 'w') as f:
-        f.write(get_css())
+        f.write(get_css(True))
         f.write(get_font())
 
         f.write(get_head())
@@ -137,6 +178,11 @@ def write_output(f_name, props):
         f.write(close_body())
 
 if __name__ == '__main__':
+    all_props = []
     for name in os.listdir("../input"):
         props = read_properties_file("../input/" + name)
+        props['fname'] = name.replace('.properties', '.html')
+        all_props.append(props);
         write_output(name, props)
+
+    write_index(all_props)
