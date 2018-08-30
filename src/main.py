@@ -15,6 +15,8 @@ def read_properties_file(path):
                 if not props.get(key):
                     props[key] = []
                     props[key].append(value)
+                else:
+                    props[key].append(value)
     return props
 
 
@@ -68,7 +70,7 @@ def open_li():
 
 
 def close_li():
-    return '</li>'
+    return '</li>\n'
 
 def open_footer():
     return '<footer>'
@@ -192,6 +194,7 @@ def write_page(f_name, props):
 
         source_props = props.get("source")
 
+        print(source_props)
         for source in source_props:
             f.write(open_li())
             f.write(open_a(source.split('>')[1]))
