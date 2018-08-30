@@ -3,7 +3,6 @@ import os
 SITE_TITLE = 'Ghosts of Massachusetts'
 UP_INDEX = '../index.html'
 
-
 def read_properties_file(path):
     props = {}
     with open(path, "rt") as f:

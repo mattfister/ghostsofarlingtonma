@@ -28,3 +28,4 @@ a:link, a:visited {
 #content a:link:after, #content a:visited:after {
 			   content: " (" attr(href) ") ";
 		       }
+footer { margin-top: 40px; }
