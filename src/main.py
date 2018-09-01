@@ -95,6 +95,13 @@ def get_head():
     gtag('js', new Date());\n\
     gtag('config', 'UA-124818630-1');\n\
     </script>\n\
+    <script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>\n\
+    <script>\n\
+    (adsbygoogle = window.adsbygoogle || []).push({\n\
+    google_ad_client: 'ca-pub-8138649344789982',\n\
+    enable_page_level_ads: true\n\
+    });\n\
+    </script>\n\
     <title>" + SITE_TITLE + "</title>\n\
     </head>\n"
 
