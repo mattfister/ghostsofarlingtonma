@@ -149,8 +149,8 @@ def write_index(all_props):
         f.write(open_ul())
         for city, props_list in sorted(cities_to_props_list.items()):
             f.write(open_li())
-            f.write(open_a('./c/'+props.get('city')[0].lower()+'.html'))
-            f.write(props.get('city')[0] + ', MA')
+            f.write(open_a('./c/'+city.lower()+'.html'))
+            f.write(city + ', MA')
             f.write(close_a())
             f.write(close_li())
 
