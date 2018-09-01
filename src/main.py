@@ -1,7 +1,10 @@
 import os
 
 SITE_TITLE = 'Ghosts of Massachusetts'
+SITE_TITLE_WITH_LOGO = '<img src="./i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
+SITE_TITLE_WITH_LOGO_UP = '<img src="../i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
 UP_INDEX = '../index.html'
+
 
 def read_properties_file(path):
     props = {}
@@ -19,15 +22,16 @@ def read_properties_file(path):
                     props[key].append(value)
     return props
 
-
 def get_font():
     return "<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>\n"
+
 
 def get_css(up):
     if up:
         return '<link rel="stylesheet" href="../css/base.css">\n'
     else:
         return '<link rel="stylesheet" href="./css/base.css">\n'
+
 
 def open_body():
     return '<body>\n'
@@ -72,11 +76,14 @@ def open_li():
 def close_li():
     return '</li>\n'
 
+
 def open_footer():
     return '<footer>'
 
+
 def close_footer():
     return '</footer>'
+
 
 def get_head():
     return "<head>\n\
@@ -104,7 +111,7 @@ def write_index(all_props):
         # Site title
         f.write(open_h(1))
         f.write(open_a('./'))
-        f.write(SITE_TITLE)
+        f.write(SITE_TITLE_WITH_LOGO)
         f.write(close_a())
         f.write(close_h(1))
 
@@ -167,7 +174,7 @@ def write_page(f_name, props):
         # Site title
         f.write(open_h(1))
         f.write(open_a(UP_INDEX))
-        f.write(SITE_TITLE)
+        f.write(SITE_TITLE_WITH_LOGO_UP)
         f.write(close_a())
         f.write(close_h(1))
 
@@ -234,7 +241,7 @@ def write_city(city_name, all_location_props):
         # Site title
         f.write(open_h(1))
         f.write(open_a(UP_INDEX))
-        f.write(SITE_TITLE)
+        f.write(SITE_TITLE_WITH_LOGO_UP)
         f.write(close_a())
         f.write(close_h(1))
 
