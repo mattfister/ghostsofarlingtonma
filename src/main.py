@@ -85,6 +85,14 @@ def close_footer():
     return '</footer>'
 
 
+def get_br():
+    return '<br/>'
+
+
+def get_submit_link():
+    return '<a href="https://goo.gl/forms/nGh9zTTwLzmrVdSd2">Submit Your Ghost Sighting</a>'
+
+
 def get_head():
     return "<head>\n\
     <!-- Global site tag (gtag.js) - Google Analytics -->\n\
@@ -122,7 +130,7 @@ def write_index(all_props):
         f.write(close_a())
         f.write(close_h(1))
 
-        f.write(p("The below map tracks ghosts and haunted places in Massachusetts. Click on a location for more information. To report a ghost sighting in MA, <a href='https://www.twitter.com/matt_fister'>please contact me.</a>\n"))
+        f.write(p("The below map tracks ghosts and haunted places in Massachusetts. Click on a location for more information. To report a ghost sighting in MA, <a href='https://goo.gl/forms/nGh9zTTwLzmrVdSd2'>click here.</a>\n"))
 
         f.write(open_h(2))
         f.write("Map of Ghost Sightings")
@@ -130,11 +138,14 @@ def write_index(all_props):
 
         f.write('<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>\n')
 
-        f.write(close_body())
+
 
         f.write(open_h(2))
         f.write("All Ghost Sightings")
         f.write(close_h(2))
+
+
+
 
 
         cities_to_props_list = {}
@@ -166,6 +177,12 @@ def write_index(all_props):
             write_city(city, props_list)
 
         f.write(close_ul())
+
+        f.write(open_footer())
+        f.write(get_submit_link())
+        f.write(close_footer())
+
+        f.write(close_body())
 
 
 def write_page(f_name, props):
@@ -228,6 +245,8 @@ def write_page(f_name, props):
         f.write(close_ul())
 
         f.write(open_footer())
+        f.write(get_submit_link())
+        f.write(get_br())
         f.write(open_a(".."))
         f.write("Back to " + SITE_TITLE)
         f.write(close_a())
@@ -274,6 +293,8 @@ def write_city(city_name, all_location_props):
         f.write(close_ul())
 
         f.write(open_footer())
+        f.write(get_submit_link())
+        f.write(get_br())
         f.write(open_a(".."))
         f.write("Back to " + SITE_TITLE)
         f.write(close_a())
