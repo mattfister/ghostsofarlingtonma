@@ -132,7 +132,7 @@ def write_index(all_props):
                 cities_to_props_list[city].append(props)
 
         f.write(open_ul())
-        for city, props_list in cities_to_props_list.items():
+        for city, props_list in sorted(cities_to_props_list.items()):
             f.write(open_li())
             f.write(city+'\n')
             f.write(close_li())
@@ -141,7 +141,7 @@ def write_index(all_props):
 
             for props in props_list:
                 f.write(open_li())
-                f.write(open_a('./l/'+props.get('fname')))
+                f.write(open_a('./g/'+props.get('fname')))
                 f.write(props.get('title')[0])
                 f.write(close_a())
                 f.write(close_li())
@@ -151,7 +151,7 @@ def write_index(all_props):
 
 def write_page(f_name, props):
     f_name = f_name.replace('properties', 'html')
-    with open("../l/" + f_name, 'w') as f:
+    with open("../g/" + f_name, 'w') as f:
         f.write(get_css(True))
         f.write(get_font())
 
