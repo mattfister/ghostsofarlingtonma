@@ -91,6 +91,7 @@ def get_head():
     <title>" + SITE_TITLE + "</title>\n\
     </head>\n"
 
+
 def write_index(all_props):
     with open("../index.html", 'w') as f:
         f.write(get_css(False))
@@ -134,7 +135,9 @@ def write_index(all_props):
         f.write(open_ul())
         for city, props_list in sorted(cities_to_props_list.items()):
             f.write(open_li())
-            f.write(city+'\n')
+            f.write(open_a('./c/'+props.get('city')[0].lower()+'.html'))
+            f.write(props.get('city')[0] + ', MA')
+            f.write(close_a())
             f.write(close_li())
 
             f.write(open_ul())
@@ -146,6 +149,8 @@ def write_index(all_props):
                 f.write(close_a())
                 f.write(close_li())
             f.write(close_ul())
+            write_city(city, props_list)
+
         f.write(close_ul())
 
 
@@ -172,6 +177,10 @@ def write_page(f_name, props):
         f.write(props.get('title')[0])
         f.write(close_a())
         f.write(close_h(2))
+
+        f.write(open_a('../c/'+props.get('city')[0].lower()+'.html'))
+        f.write(props.get('city')[0] + ', MA')
+        f.write(close_a())
 
         # Overview title
         f.write(open_h(3))
@@ -202,6 +211,52 @@ def write_page(f_name, props):
             f.write(close_a())
             f.write(close_li())
 
+        f.write(close_ul())
+
+        f.write(open_footer())
+        f.write(open_a(".."))
+        f.write("Back to " + SITE_TITLE)
+        f.write(close_a())
+        f.write(close_footer())
+
+        f.write(close_body())
+
+
+def write_city(city_name, all_location_props):
+    with open("../c/" + city_name.lower() + '.html', 'w') as f:
+        f.write(get_css(True))
+        f.write(get_font())
+
+        f.write(get_head())
+
+        f.write(open_body())
+
+        # Site title
+        f.write(open_h(1))
+        f.write(open_a(UP_INDEX))
+        f.write(SITE_TITLE)
+        f.write(close_a())
+        f.write(close_h(1))
+
+        # Page title
+        f.write(open_h(2))
+        f.write(open_a('./'+city_name.lower() + '.html'))
+        f.write(city_name.title() + ', MA')
+        f.write(close_a())
+        f.write(close_h(2))
+
+        f.write(open_h(3))
+        f.write("Known Ghosts and Hauntings")
+        f.write(close_h(3))
+
+        f.write(open_ul())
+
+        for props in all_location_props:
+            f.write(open_li())
+            f.write(open_a('../g/'+props.get('fname')))
+            f.write(props.get('title')[0])
+            f.write(close_a())
+            f.write(close_li())
         f.write(close_ul())
 
         f.write(open_footer())
