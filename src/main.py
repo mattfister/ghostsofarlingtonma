@@ -1,9 +1,20 @@
 import os
+from PIL import Image
 
 SITE_TITLE = 'Ghosts of Massachusetts'
 SITE_TITLE_WITH_LOGO = '<img src="./i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
 SITE_TITLE_WITH_LOGO_UP = '<img src="../i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
 UP_INDEX = '../index.html'
+
+
+def gen_thumbs():
+    basewidth = 300
+    for path in os.listdir('../gimg'):
+        img = Image.open('../gimg/'+path)
+        wpercent = (basewidth/float(img.size[0]))
+        hsize = int((float(img.size[1])*float(wpercent)))
+        img = img.resize((basewidth ,hsize), Image.ANTIALIAS)
+        img.save('../tgimg/'+path)
 
 
 def read_properties_file(path):
@@ -93,6 +104,11 @@ def get_submit_link():
     return '<a href="https://goo.gl/forms/nGh9zTTwLzmrVdSd2">Submit Your Ghost Sighting</a>'
 
 
+def get_place_img(img_name, place_name):
+    thumb = img_name.replace('gimg', 'tgimg')
+    return '<a href="' + img_name + '" target="blank"><img src="' + thumb + '" alt="'+place_name+'" class="thumbnail"/img></a>'
+
+
 def get_head():
     return "<head>\n\
     <!-- Global site tag (gtag.js) - Google Analytics -->\n\
@@ -114,7 +130,7 @@ def get_head():
     </head>\n"
 
 
-def write_index(all_props):
+def write_index(all_props, name_to_images):
     with open("../index.html", 'w') as f:
         f.write(get_css(False))
         f.write(get_font())
@@ -138,15 +154,9 @@ def write_index(all_props):
 
         f.write('<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>\n')
 
-
-
         f.write(open_h(2))
         f.write("All Ghost Sightings")
         f.write(close_h(2))
-
-
-
-
 
         cities_to_props_list = {}
         for props in all_props:
@@ -185,7 +195,7 @@ def write_index(all_props):
         f.write(close_body())
 
 
-def write_page(f_name, props):
+def write_page(f_name, props, images):
     f_name = f_name.replace('properties', 'html')
     with open("../g/" + f_name, 'w') as f:
         f.write(get_css(True))
@@ -221,9 +231,13 @@ def write_page(f_name, props):
         f.write(p(props.get('overview')[0]))
 
         # Images title
-        f.write(open_h(3))
-        f.write('Images\n')
-        f.write(close_h(3))
+
+        if len(images) > 0:
+            f.write(open_h(3))
+            f.write('Images\n')
+            f.write(close_h(3))
+            for image in images:
+                f.write(get_place_img('../gimg/'+image, props.get('title')[0]))
 
         # Sources title
         f.write(open_h(3))
@@ -303,11 +317,20 @@ def write_city(city_name, all_location_props):
         f.write(close_body())
 
 if __name__ == '__main__':
+    gen_thumbs()
     all_props = []
+    name_to_images = {}
+    for name in os.listdir("../input"):
+        name_to_images[name.replace('.properties', '')] = []
+    for img_name in os.listdir('../gimg'):
+        for place_name in name_to_images.keys():
+            if img_name.find(place_name) >= 0:
+                name_to_images[place_name].append(img_name)
+
     for name in os.listdir("../input"):
         props = read_properties_file("../input/" + name)
         props['fname'] = name.replace('.properties', '.html')
         all_props.append(props);
-        write_page(name, props)
+        write_page(name, props, name_to_images[name.replace('.properties', '')])
 
-    write_index(all_props)
+    write_index(all_props, name_to_images)
