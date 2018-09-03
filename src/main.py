@@ -5,16 +5,18 @@ SITE_TITLE = 'Ghosts of Massachusetts'
 SITE_TITLE_WITH_LOGO = '<img src="./i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
 SITE_TITLE_WITH_LOGO_UP = '<img src="../i/ghosts_of_ma_logo.svg" alt="Ghosts of MA Logo" style="height: 1.8em;"> ' + SITE_TITLE
 UP_INDEX = '../index.html'
+IMAGE_PATH = 'gimg'
+THUMBNAIL_PATH = 'tgimg'
 
 
 def gen_thumbs():
-    basewidth = 300
-    for path in os.listdir('../gimg'):
-        img = Image.open('../gimg/'+path)
-        wpercent = (basewidth/float(img.size[0]))
-        hsize = int((float(img.size[1])*float(wpercent)))
-        img = img.resize((basewidth ,hsize), Image.ANTIALIAS)
-        img.save('../tgimg/'+path)
+    base_width = 300
+    for path in os.listdir('../' + IMAGE_PATH):
+        img = Image.open('../' + IMAGE_PATH + '/'+path)
+        w_percent = (base_width/float(img.size[0]))
+        h_size = int((float(img.size[1])*float(w_percent)))
+        img = img.resize((base_width, h_size), Image.ANTIALIAS)
+        img.save('../' + THUMBNAIL_PATH + '/' + path)
 
 
 def read_properties_file(path):
@@ -33,6 +35,7 @@ def read_properties_file(path):
                     props[key].append(value)
     return props
 
+
 def get_font():
     return "<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>\n"
 
@@ -44,60 +47,24 @@ def get_css(up):
         return '<link rel="stylesheet" href="./css/base.css">\n'
 
 
-def open_body():
-    return '<body>\n'
+def open_tag(tag):
+    return '<' + tag + '>\n'
 
 
-def close_body():
-    return '</body>\n'
+def close_tag(tag):
+    return '</' + tag + '>\n'
 
 
-def open_h(n):
-    return '<h' + str(n) + '>'
+def get_tag(tag, content=''):
+    return open_tag(tag) + content + close_tag(tag)
 
 
-def close_h(n):
-    return '</h' + str(n) + '>\n'
+def get_open_a_tag(href):
+    return '<a href='+href+'>'
 
 
-def open_a(href):
-    return '<a href=' + href + '>'
-
-
-def close_a():
-    return '</a>'
-
-
-def p(content):
-    return '<p>'+content+'</p>\n'
-
-
-def open_ul():
-    return '<ul>'
-
-
-def close_ul():
-    return '</ul>\n'
-
-
-def open_li():
-    return '<li>'
-
-
-def close_li():
-    return '</li>\n'
-
-
-def open_footer():
-    return '<footer>'
-
-
-def close_footer():
-    return '</footer>'
-
-
-def get_br():
-    return '<br/>'
+def get_link(href, content):
+    return get_open_a_tag(href) + content + close_tag('a')
 
 
 def get_submit_link():
@@ -130,6 +97,10 @@ def get_head():
     </head>\n"
 
 
+def write_line(f, line):
+    f.write(line + '\n')
+
+
 def write_index(all_props, name_to_images):
     with open("../index.html", 'w') as f:
         f.write(get_css(False))
@@ -137,26 +108,18 @@ def write_index(all_props, name_to_images):
 
         f.write(get_head())
 
-        f.write(open_body())
+        write_line(f, open_tag('body'))
 
         # Site title
-        f.write(open_h(1))
-        f.write(open_a('./'))
-        f.write(SITE_TITLE_WITH_LOGO)
-        f.write(close_a())
-        f.write(close_h(1))
+        write_line(f, get_tag('h1', get_link('./', SITE_TITLE_WITH_LOGO)))
 
-        f.write(p("The below map tracks ghosts and haunted places in Massachusetts. Click on a location for more information. To report a ghost sighting in MA, <a href='https://goo.gl/forms/nGh9zTTwLzmrVdSd2'>click here.</a>\n"))
+        write_line(f, get_tag('p', "The below map tracks ghosts and haunted places in Massachusetts. Click on a location for more information. To report a ghost sighting in MA, <a href='https://goo.gl/forms/nGh9zTTwLzmrVdSd2'>click here.</a>"))
 
-        f.write(open_h(2))
-        f.write("Map of Ghost Sightings")
-        f.write(close_h(2))
+        write_line(f, get_tag('h2', 'Map of Ghost Sightings'))
 
-        f.write('<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>\n')
+        write_line(f, '<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>')
 
-        f.write(open_h(2))
-        f.write("All Ghost Sightings")
-        f.write(close_h(2))
+        write_line(f, get_tag('h2', 'All Ghost Sightings'))
 
         cities_to_props_list = {}
         for props in all_props:
@@ -167,32 +130,24 @@ def write_index(all_props, name_to_images):
             else:
                 cities_to_props_list[city].append(props)
 
-        f.write(open_ul())
+        write_line(f, open_tag('ul'))
         for city, props_list in sorted(cities_to_props_list.items()):
-            f.write(open_li())
-            f.write(open_a('./c/'+city.lower()+'.html'))
-            f.write(city + ', MA')
-            f.write(close_a())
-            f.write(close_li())
+            write_line(f, get_tag('li', get_link('./c/'+city.lower()+'.html', city + ', MA')))
 
-            f.write(open_ul())
+            write_line(f, open_tag('ul'))
 
             for props in props_list:
-                f.write(open_li())
-                f.write(open_a('./g/'+props.get('fname')))
-                f.write(props.get('title')[0])
-                f.write(close_a())
-                f.write(close_li())
-            f.write(close_ul())
+                write_line(f, get_tag('li', get_link('./g/'+props.get('fname'), props.get('title')[0])))
+            write_line(f, close_tag('ul'))
             write_city(city, props_list)
 
-        f.write(close_ul())
+        write_line(f, close_tag('ul'))
 
-        f.write(open_footer())
+        write_line(f, open_tag('footer'))
         f.write(get_submit_link())
-        f.write(close_footer())
+        write_line(f, close_tag('footer'))
 
-        f.write(close_body())
+        write_line(f, close_tag('body'))
 
 
 def write_page(f_name, props, images):
@@ -203,70 +158,46 @@ def write_page(f_name, props, images):
 
         f.write(get_head())
 
-        f.write(open_body())
+        write_line(f, open_tag('body'))
 
         # Site title
-        f.write(open_h(1))
-        f.write(open_a(UP_INDEX))
-        f.write(SITE_TITLE_WITH_LOGO_UP)
-        f.write(close_a())
-        f.write(close_h(1))
+        write_line(f, get_tag('h1', get_link(UP_INDEX, SITE_TITLE_WITH_LOGO_UP)))
 
         # Page title
-        f.write(open_h(2))
-        f.write(open_a('./'+f_name))
-        f.write(props.get('title')[0])
-        f.write(close_a())
-        f.write(close_h(2))
+        write_line(f, get_tag('h2', get_link('./'+f_name, props.get('title')[0])))
 
-        f.write(open_a('../c/'+props.get('city')[0].lower()+'.html'))
-        f.write(props.get('city')[0] + ', MA')
-        f.write(close_a())
+        # Location
+        write_line(f, get_link('../c/'+props.get('city')[0].lower()+'.html', props.get('city')[0] + ', MA'))
 
-        # Overview title
-        f.write(open_h(3))
-        f.write('Overview\n')
-        f.write(close_h(3))
+        # Overview
+        write_line(f, get_tag('h3', 'Overview'))
+        write_line(f, get_tag('p', props.get('overview')[0]))
 
-        f.write(p(props.get('overview')[0]))
-
-        # Images title
-
+        # Images
         if len(images) > 0:
-            f.write(open_h(3))
-            f.write('Images\n')
-            f.write(close_h(3))
+            write_line(f, get_tag('h3', 'Images'))
             for image in images:
-                f.write(get_place_img('../gimg/'+image, props.get('title')[0]))
+                write_line(f, get_place_img('../gimg/'+image, props.get('title')[0]))
 
         # Sources title
-        f.write(open_h(3))
-        f.write('Sources\n')
-        f.write(close_h(3))
+        write_line(f, get_tag('h3', 'Sources'))
 
-        f.write(open_ul())
+        write_line(f, open_tag('ul'))
 
         source_props = props.get("source")
 
-        print(source_props)
         for source in source_props:
-            f.write(open_li())
-            f.write(open_a(source.split('>')[1]))
-            f.write((source.split('>'))[0])
-            f.write(close_a())
-            f.write(close_li())
+            write_line(f, get_tag('li', get_link(source.split('>')[1], source.split('>')[0])))
 
-        f.write(close_ul())
+        write_line(f, close_tag('ul'))
 
-        f.write(open_footer())
+        write_line(f, open_tag('footer'))
         f.write(get_submit_link())
-        f.write(get_br())
-        f.write(open_a(".."))
-        f.write("Back to " + SITE_TITLE)
-        f.write(close_a())
-        f.write(close_footer())
+        write_line(f, open_tag('br'))
+        write_line(f, get_link('..', 'Back to ' + SITE_TITLE))
+        write_line(f, close_tag('footer'))
 
-        f.write(close_body())
+        write_line(f, close_tag('body'))
 
 
 def write_city(city_name, all_location_props):
@@ -276,45 +207,30 @@ def write_city(city_name, all_location_props):
 
         f.write(get_head())
 
-        f.write(open_body())
+        write_line(f, open_tag('body'))
 
         # Site title
-        f.write(open_h(1))
-        f.write(open_a(UP_INDEX))
-        f.write(SITE_TITLE_WITH_LOGO_UP)
-        f.write(close_a())
-        f.write(close_h(1))
+        write_line(f, get_tag('h1', get_link(UP_INDEX, SITE_TITLE_WITH_LOGO_UP)))
 
         # Page title
-        f.write(open_h(2))
-        f.write(open_a('./'+city_name.lower() + '.html'))
-        f.write(city_name.title() + ', MA')
-        f.write(close_a())
-        f.write(close_h(2))
+        write_line(f, get_tag('h2', get_link('./'+city_name.lower() + '.html', city_name.title() + ', MA')))
 
-        f.write(open_h(3))
-        f.write("Known Ghosts and Hauntings")
-        f.write(close_h(3))
+        write_line(f, get_tag('h3', "Reported Ghosts and Hauntings"))
 
-        f.write(open_ul())
+        write_line(f, open_tag('ul'))
 
         for props in all_location_props:
-            f.write(open_li())
-            f.write(open_a('../g/'+props.get('fname')))
-            f.write(props.get('title')[0])
-            f.write(close_a())
-            f.write(close_li())
-        f.write(close_ul())
+            write_line(f, get_tag('li', get_link('../g/'+props.get('fname'), props.get('title')[0])))
 
-        f.write(open_footer())
+        write_line(f, close_tag('ul'))
+
+        write_line(f, open_tag('footer'))
         f.write(get_submit_link())
-        f.write(get_br())
-        f.write(open_a(".."))
-        f.write("Back to " + SITE_TITLE)
-        f.write(close_a())
-        f.write(close_footer())
+        write_line(f, open_tag('br'))
+        write_line(f, get_link('..', 'Back to ' + SITE_TITLE))
+        write_line(f, close_tag('footer'))
 
-        f.write(close_body())
+        write_line(f, close_tag('body'))
 
 if __name__ == '__main__':
     gen_thumbs()
