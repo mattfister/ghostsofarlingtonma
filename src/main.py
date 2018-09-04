@@ -170,8 +170,10 @@ def write_page(f_name, props, images):
         write_line(f, get_link('../c/'+props.get('city')[0].lower()+'.html', props.get('city')[0] + ', MA'))
 
         # Overview
-        write_line(f, get_tag('h3', 'Overview'))
-        write_line(f, get_tag('p', props.get('overview')[0]))
+        if props.get('overview'):
+            write_line(f, get_tag('h3', 'Overview'))
+            for overview in props.get('overview'):
+                write_line(f, get_tag('p', overview))
 
         # Images
         if len(images) > 0:
