@@ -118,7 +118,7 @@ def write_index(all_props, name_to_images):
 
         write_line(f, get_tag('h2', 'Map of Ghost Sightings'))
 
-        write_line(f, '<iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe>')
+        write_line(f, '<div class="map-responsive"><iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe></div>')
 
         write_line(f, get_tag('h2', 'All Ghost Sightings'))
 
