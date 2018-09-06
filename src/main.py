@@ -252,3 +252,9 @@ if __name__ == '__main__':
         write_page(name, props, name_to_images[name.replace('.properties', '')])
 
     write_index(all_props, name_to_images)
+
+    with open('../sitemap.txt', 'w') as s:
+        base_url = "https://ghostsofma.com/index.html"
+        s.write(base_url + '/index.html\n')
+        for name in os.listdir('../g'):
+            s.write(base_url + '/' + name + '\n')
