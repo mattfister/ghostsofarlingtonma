@@ -93,6 +93,7 @@ def get_head():
     enable_page_level_ads: true\n\
     });\n\
     </script>\n\
+    <meta name='viewport' content='width=device-width, initial-scale=1'>\n\
     <title>" + SITE_TITLE + "</title>\n\
     </head>\n"
 

@@ -1,12 +1,13 @@
 body {
-    font: 1em Georgia, "Times New Roman", Times, serif;
+    font: 1.0em 'Lora', "Times New Roman", Times, serif;
     color: #000;
     margin:auto;
     max-width: 640px;
     font-family: 'Lora', serif;
     margin-top: 20px;
     background-color: #aaaaaa;
-    margin-bottom: 40px;
+    margin-bottom: 400px;
+    padding: 10px;
 }
 h1,h2,h3,h4,h5,h6 {
     font-family: Helvetica, Arial, sans-serif;
@@ -14,9 +15,9 @@ h1,h2,h3,h4,h5,h6 {
     color: #000;
     font-family: 'Lora', serif;
 }
-h1 { font-size: 250%; }
-h2 { font-size: 175%; }
-h3 { font-size: 135%; }
+h1 { font-size: 180%; text-align: center }
+h2 { font-size: 160%; }
+h3 { font-size: 130%; }
 h4 { font-size: 100%; font-variant: small-caps; }
 h5 { font-size: 100%; }
 h6 { font-size: 90%; font-style: italic; }
