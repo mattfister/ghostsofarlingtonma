@@ -33,6 +33,30 @@ Map of Ghost Sightings</h2>
 
 <div class="map-responsive"><iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe></div>
 <h2>
+Featured Haunting</h2>
+
+<div id="featured_haunting"></div>
+<script>
+var featured_hauntings=[{'title': 'Gray and Newport', 'images': ['arlington-gray-and-newport-1.jpg', 'arlington-gray-and-newport-2.jpg'], 'place': 'Arlington, MA', 'url': 'g/arlington-gray-and-newport.html'}, {'title': 'Pelham Terrace', 'images': ['arlington-pelham-terrace-1.jpg'], 'place': 'Arlington, MA', 'url': 'g/arlington-pelham-terrace.html'}, {'title': 'Robbins Cottage', 'images': ['arlington-robbins-cottage-1.jpg', 'arlington-robbins-cottage-2.jpg', 'arlington-robbins-cottage-3.jpg'], 'place': 'Arlington, MA', 'url': 'g/arlington-robbins-cottage.html'}, {'title': 'Belmont Street and Avon Road', 'images': ['watertown-belmont-and-avon-1.png', 'watertown-belmont-and-avon-2.png', 'watertown-belmont-and-avon-3.png'], 'place': 'Watertown, MA', 'url': 'g/watertown-belmont-and-avon.html'}, {'title': 'Regis College', 'images': ['weston-regis-college-1.jpg', 'weston-regis-college-2.JPG'], 'place': 'Weston, MA', 'url': 'g/weston-regis-college.html'}]
+var featured_haunting=featured_hauntings[Math.floor(Math.random()*featured_hauntings.length)];
+var link=document.createElement("a");
+link.href=featured_haunting.url;
+var title=document.createElement("h3");
+var node=document.createTextNode(featured_haunting.title + ", " + featured_haunting.place);
+link.appendChild(node);
+title.appendChild(link);
+var element=document.getElementById("featured_haunting");
+element.appendChild(title);
+var image_link=document.createElement("a");
+image_link.href=featured_haunting.url;
+var image_src="tgimg/"+featured_haunting.images[Math.floor(Math.random()*featured_haunting.images.length)];
+var image = document.createElement("img");
+image.src = image_src;
+image.height = "150";
+image_link.appendChild(image);
+element.appendChild(image_link);
+</script>
+<h2>
 All Ghost Sightings</h2>
 
 <ul>

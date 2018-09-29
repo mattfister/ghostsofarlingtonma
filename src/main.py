@@ -1,4 +1,5 @@
 import os
+import random
 from PIL import Image
 
 SITE_TITLE = 'Ghosts of Massachusetts'
@@ -119,6 +120,41 @@ def write_index(all_props, name_to_images):
         write_line(f, get_tag('h2', 'Map of Ghost Sightings'))
 
         write_line(f, '<div class="map-responsive"><iframe src="https://www.google.com/maps/d/embed?mid=1L5_PGGQLr11iCM2b7mwZQD-8mSiTj7Jy&hl=en" width="640" height="480"></iframe></div>')
+
+        write_line(f, get_tag('h2', 'Featured Haunting'))
+        write_line(f, '<div id="featured_haunting"></div>')
+        featured_hauntings = []
+        for prop in all_props:
+            if name_to_images[prop['key']]:
+                featured_haunting = {'title': prop['title'][0], 'url': 'g/' + prop['fname'],
+                                     'place': prop['city'][0] + ', MA', 'images': name_to_images[prop['key']]}
+                featured_hauntings.append(featured_haunting)
+
+        write_line(f, '<script>')
+        write_line(f, 'var featured_hauntings=' + str(featured_hauntings))
+        write_line(f, 'var featured_haunting=featured_hauntings[Math.floor(Math.random()*featured_hauntings.length)];')
+        write_line(f, 'var link=document.createElement("a");')
+        write_line(f, 'link.href=featured_haunting.url;')
+        write_line(f, 'var title=document.createElement("h3");')
+        write_line(f, 'var node=document.createTextNode(featured_haunting.title + ", " + featured_haunting.place);')
+        write_line(f, 'link.appendChild(node);')
+        write_line(f, 'title.appendChild(link);')
+        write_line(f, 'var element=document.getElementById("featured_haunting");')
+        write_line(f, 'element.appendChild(title);')
+        write_line(f, 'var image_link=document.createElement("a");')
+        write_line(f, 'image_link.href=featured_haunting.url;')
+        write_line(f, 'var image_src="tgimg/"+featured_haunting.images[Math.floor(Math.random()*featured_haunting.images.length)];')
+        write_line(f, 'var image = document.createElement("img");')
+        write_line(f, 'image.src = image_src;')
+        write_line(f, 'image.height = "150";')
+        write_line(f, 'image_link.appendChild(image);')
+        write_line(f, 'element.appendChild(image_link);')
+        write_line(f, '</script>')
+
+        # Print out featured_hauntings to debug json
+        # write_line(f, get_tag('h3', str(featured_hauntings)))
+        # write_line(f, get_tag('h3', str(list(name_to_images.keys()))))
+        # write_line(f, get_tag('h3', str(all_props)))
 
         write_line(f, get_tag('h2', 'All Ghost Sightings'))
 
@@ -249,7 +285,8 @@ if __name__ == '__main__':
     for name in os.listdir("../input"):
         props = read_properties_file("../input/" + name)
         props['fname'] = name.replace('.properties', '.html')
-        all_props.append(props);
+        props['key'] = name.replace('.properties', '')
+        all_props.append(props)
         write_page(name, props, name_to_images[name.replace('.properties', '')])
 
     write_index(all_props, name_to_images)
